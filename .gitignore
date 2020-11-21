@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+*.hex
+*.elf
+
+# Debug
+*.dblite
+
+# OctoWS2811 Stuff
+**/OctoWS2811/examples/*
+**/OctoWS2811/extras/*
