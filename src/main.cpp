@@ -43,6 +43,7 @@ int DrawingBuffer[OCTO_DRAWINGBUFFER_SIZE];
   List drawing function declarations to be listed in DrawRoutines
 */
 void drawLineDance();
+void drawCandyCane();
 
 /*
   This function pointer list determines the order at which drawing
@@ -52,7 +53,8 @@ void drawLineDance();
 uint32_t CurrentDrawingRoutine = 0;
 void (* DrawRoutines[])() =
 {
-  drawLineDance
+  //drawLineDance,
+  drawCandyCane
 };
 
 void setupButton();
