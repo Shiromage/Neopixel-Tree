@@ -37,6 +37,12 @@ SOFTWARE.
 #define OCTO_CONFIG (WS2811_RGB | WS2811_800kHz)
 
 //The pin that the effect change button is tied to.
-#define PIN_BUTTON  1
+#define PIN_BUTTON  22
+
+//The level shifter has a low-enable pin that must be used
+#define PIN_LEVEL_SHIFTER_EN  23
+
+//An analog read will be done from this pin to generate the random seed
+#define PIN_RANDOM  21
 
 extern OctoWS2811 * Octo;
