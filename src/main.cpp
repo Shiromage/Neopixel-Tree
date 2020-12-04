@@ -53,10 +53,11 @@ void drawCandyCane();
 uint32_t CurrentDrawingRoutine = 0;
 void (* DrawRoutines[])() =
 {
-  //drawLineDance,
+  drawLineDance,
   drawCandyCane
 };
 
+void enableLevelShifter();
 void setupButton();
 
 void setup()
@@ -65,8 +66,10 @@ void setup()
   memset(FrameBuffer, 0, sizeof(FrameBuffer));
   Octo = new OctoWS2811(MAX_LEDS_PER_CHANNEL, FrameBuffer, DrawingBuffer, OCTO_CONFIG);
   Octo->begin();
+  enableLevelShifter();
   setupButton();
-  randomSeed(0);
+  pinMode(PIN_RANDOM, INPUT);
+  randomSeed(analogRead(PIN_RANDOM));
 }
 
 void loop()
@@ -81,14 +84,20 @@ void loop()
 
 void changeDraw()
 {
-  if(++CurrentDrawingRoutine >= sizeof(DrawRoutines))
+  if(++CurrentDrawingRoutine >= sizeof(DrawRoutines) / sizeof(DrawRoutines[0]))
   {
     CurrentDrawingRoutine = 0;
   }
 }
 
+void enableLevelShifter()
+{
+  pinMode(PIN_LEVEL_SHIFTER_EN, OUTPUT);
+  digitalWrite(PIN_LEVEL_SHIFTER_EN, 0);
+}
+
 void setupButton()
 {
-  //pinMode(PIN_BUTTON, INPUT);
-  //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON), changeDraw, FALLING);
+  pinMode(PIN_BUTTON, INPUT);
+  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON), changeDraw, FALLING);
 }
