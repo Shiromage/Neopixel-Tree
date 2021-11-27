@@ -33,7 +33,7 @@ SOFTWARE.
 #include "config.h"
 
 #define TRAIN_CAR_LENGTH    6  /*Length of a train car in lights (LEDs)*/
-#define TRAIN_CAR_PADDING   2  /*Padding distance between two train cars*/
+#define TRAIN_CAR_PADDING   4  /*Padding distance between two train cars*/
 #define TRAIN_TOP_SPEED     10  /*Top speed in lights (LEDs) per second*/
 #define TRAIN_ACCEL         1.5  /*The acceleration of the train when speeding up or slowing down*/
 #define TRAIN_STOP_TIME     2  /*Time, in seconds, train spends at 0 speed to change direction*/
@@ -189,7 +189,12 @@ void drawTrainTracks()
           train.accel = 0;
           direction = (direction == FORWARD) ? BACKWARD : FORWARD; //Flip direction
           alarm_time = current_millis + TRAIN_STOP_TIME * 1000;
+          train_car_color old_color = new_car_color;
           new_car_color = (enum train_car_color)random(0, COLOR_COUNT);
+          if(new_car_color == old_color) //Prevent repeat colors
+          {
+              new_car_color = (enum train_car_color)((new_car_color + 1 == COLOR_COUNT) ? 0 : (new_car_color + 1));
+          }
       }
   }
   else if(abs(train.speed) == TRAIN_TOP_SPEED && current_millis >= alarm_time) // Time to slow down
@@ -210,32 +215,47 @@ void drawTrainTracks()
 void draw_car(train_car_s * car)
 {
     int head_led = (int)car->position;
-    //float fade_amount = car->position - head_led;
+    float head_fade_amount = car->position - head_led; // Should be a decimal number [0 , 1)
+    float tail_fade_amount = 1.0 - head_fade_amount;
     int tail_led = head_led - TRAIN_CAR_LENGTH;
     if(head_led > MAX_LEDS_PER_CHANNEL - 1)
     {
         head_led = MAX_LEDS_PER_CHANNEL - 1;
+        head_fade_amount = 0;
     }
     else if(head_led <= 0 && car->position < 0)
     {
         return;
     }
-
     if(tail_led < 0)
     {
         tail_led = 0;
+        tail_fade_amount = 0;
     }
-
-    //make sure fade isn't too strong so we avoid flickering
-
-    //uint8_t red_faded;
-    //uint8_t green_faded;
-    //uint8_t blue_faded;
 
     for(int led_index = head_led; led_index >= tail_led; led_index--)
     {
         Octo->setPixel(led_index, car->color);
     }
+
+    uint8_t red_faded;
+    uint8_t green_faded;
+    uint8_t blue_faded;
+    if(head_fade_amount)
+    {
+        red_faded = ((car->color & 0xFF00) >> 8) * head_fade_amount;
+        green_faded = ((car->color & 0xFF0000) >> 16) * head_fade_amount;
+        blue_faded = (car->color & 0xFF) * head_fade_amount;
+        Octo->setPixel(head_led, (red_faded << 8) | (green_faded << 16) | (blue_faded));
+    }
+    if(tail_fade_amount)
+    {
+        red_faded = ((car->color & 0xFF00) >> 8) * tail_fade_amount;
+        green_faded = ((car->color & 0xFF0000) >> 16) * tail_fade_amount;
+        blue_faded = (car->color & 0xFF) * tail_fade_amount;
+        Octo->setPixel(tail_led, (red_faded << 8) | (green_faded << 16) | (blue_faded));
+    }
+
 }
 
 int get_color_code(enum train_car_color color)
@@ -248,31 +268,31 @@ int get_color_code(enum train_car_color color)
         }break;
         case ORANGE:
         {
-            return 0x0088FF00;
+            return 0x0030CC00;
         }break;
         case YELLOW:
         {
-            return 0x00DDFF00;
+            return 0x00AAFF00;
         }break;
         case GREEN:
         {
             return 0x00FF0000;
         }break;
-        case CYAN:
+        case PURPLE:
         {
-            return 0x0000CCCC;
+            return 0x0000AAAA;
         }break;
         case BLUE:
         {
             return 0x000000FF;
         }break;
-        case PURPLE:
+        case CYAN:
         {
-            return 0x00CC00CC;
+            return 0x00BB00BB;
         }break;
         case PINK:
         {
-            return 0x0055FF55;
+            return 0x0044FF44;
         }break;
         case WHITE:
         {
