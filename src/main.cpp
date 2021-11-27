@@ -44,6 +44,7 @@ int DrawingBuffer[OCTO_DRAWINGBUFFER_SIZE];
 */
 void drawLineDance();
 void drawCandyCane();
+void drawTrainTracks();
 
 /*
   This function pointer list determines the order at which drawing
@@ -54,7 +55,8 @@ uint32_t CurrentDrawingRoutine = 0;
 void (* DrawRoutines[])() =
 {
   drawLineDance,
-  drawCandyCane
+  drawCandyCane,
+  drawTrainTracks
 };
 
 void enableLevelShifter();

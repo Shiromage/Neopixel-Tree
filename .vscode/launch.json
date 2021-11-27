@@ -1,5 +1,5 @@
 // AUTOMATICALLY GENERATED FILE. PLEASE DO NOT MODIFY IT MANUALLY
-
+//
 // PIO Unified Debugger
 //
 // Documentation: https://docs.platformio.org/page/plus/debugging.html
@@ -15,12 +15,12 @@
             "executable": "f:/git/Neopixel-Tree/.pio/build/teensy31/firmware.elf",
             "projectEnvName": "teensy31",
             "toolchainBinDir": "C:/Users/Chase/.platformio/packages/toolchain-gccarmnoneeabi/bin",
+            "internalConsoleOptions": "openOnSessionStart",
             "svdPath": "C:/Users/Chase/.platformio/platforms/teensy/misc/svd/MK20D5.svd",
             "preLaunchTask": {
                 "type": "PlatformIO",
                 "task": "Pre-Debug"
-            },
-            "internalConsoleOptions": "openOnSessionStart"
+            }
         },
         {
             "type": "platformio-debug",
@@ -29,8 +29,19 @@
             "executable": "f:/git/Neopixel-Tree/.pio/build/teensy31/firmware.elf",
             "projectEnvName": "teensy31",
             "toolchainBinDir": "C:/Users/Chase/.platformio/packages/toolchain-gccarmnoneeabi/bin",
+            "internalConsoleOptions": "openOnSessionStart",
+            "svdPath": "C:/Users/Chase/.platformio/platforms/teensy/misc/svd/MK20D5.svd"
+        },
+        {
+            "type": "platformio-debug",
+            "request": "launch",
+            "name": "PIO Debug (without uploading)",
+            "executable": "f:/git/Neopixel-Tree/.pio/build/teensy31/firmware.elf",
+            "projectEnvName": "teensy31",
+            "toolchainBinDir": "C:/Users/Chase/.platformio/packages/toolchain-gccarmnoneeabi/bin",
+            "internalConsoleOptions": "openOnSessionStart",
             "svdPath": "C:/Users/Chase/.platformio/platforms/teensy/misc/svd/MK20D5.svd",
-            "internalConsoleOptions": "openOnSessionStart"
+            "loadMode": "manual"
         }
     ]
 }
